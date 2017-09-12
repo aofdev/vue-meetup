@@ -18,7 +18,7 @@
         @click.stop="sideNav = !sideNav"
         class="hidden-sm-and-up "></v-toolbar-side-icon>
       <v-toolbar-title>
-        <router-link to="/" tag="span" style="cursor: pointer">Meetup</router-link>
+        <router-link to="/" tag="span" style="cursor: pointer">DevMeetup</router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-xs-only">
@@ -29,6 +29,7 @@
           :to="item.link">
           <v-icon left dark>{{ item.icon }}</v-icon>
           {{ item.title }}
+
         </v-btn>
       </v-toolbar-items>
     </v-toolbar>
@@ -42,14 +43,26 @@
   export default {
     data () {
       return {
-        sideNav: false,
-        menuItems: [
-          { icon: 'supervisor_account', title: 'View Meetups', link: '/meetups' },
-          { icon: 'room', title: 'Organize Meetup', link: '/meetup/new' },
-          { icon: 'person', title: 'Profile', link: '/profile' },
-          { icon: 'face', title: 'Sign up', link: '/signup' },
-          { icon: 'lock_open', title: 'Sign in', link: '/signin' }
+        sideNav: false
+      }
+    },
+    computed: {
+      menuItems () {
+        let menuItems = [
+          {icon: 'face', title: 'Sign up', link: '/signup'},
+          {icon: 'lock_open', title: 'Sign in', link: '/signin'}
         ]
+        if (this.userIsAuthenticated) {
+          menuItems = [
+            {icon: 'supervisor_account', title: 'View Meetups', link: '/meetups'},
+            {icon: 'room', title: 'Organize Meetup', link: '/meetup/new'},
+            {icon: 'person', title: 'Profile', link: '/profile'}
+          ]
+        }
+        return menuItems
+      },
+      userIsAuthenticated () {
+        return this.$store.getters.user !== null && this.$store.getters.user !== undefined
       }
     }
   }
